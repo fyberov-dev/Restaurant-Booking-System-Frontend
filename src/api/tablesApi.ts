@@ -4,7 +4,6 @@ import { PATHS } from "../constants/paths";
 
 const getTables = async () => {
     const response = await axios.get<Table[]>(PATHS.GET_TABLES);
-    console.log(response.data);
     return response.data;
 };
 
