@@ -1,11 +1,12 @@
 interface ChairObjectProps {
     isReverse?: boolean;
+    isBusy: boolean;
 }
 
-const ChairObject = ({ isReverse }: ChairObjectProps) => {
+const ChairObject = ({ isReverse, isBusy }: ChairObjectProps) => {
     return (
         <div
-            className="chair bg-zinc-700"
+            className={`chair ${isBusy ? "bg-red-300" : "bg-zinc-700"}`}
             style={{
                 width: "8px",
                 height: "16px",
