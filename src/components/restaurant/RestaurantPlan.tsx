@@ -14,8 +14,6 @@ const RestaurantPlan = () => {
     const { bookings } = useContext(BookingContext);
     const bookingsWithKeys = Object.fromEntries(bookings.map((b) => [b.tableId, b]));
 
-    console.log(bookings);
-
     const { data: tables } = useTables();
 
     const transformWrapperRef = useRef<ReactZoomPanPinchContentRef | null>(null);

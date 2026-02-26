@@ -1,5 +1,5 @@
+// TODO : MAKE IT NOT HARD CODED. These data should be requested from the server, but server currently does not provide them
 const minutesStep = 15;
-
 const openingHours = 10;
 const closingHours = 22;
 

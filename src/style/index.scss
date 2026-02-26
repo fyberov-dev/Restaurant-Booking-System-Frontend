@@ -11,23 +11,19 @@
 }
 
 .custom-scrollbar {
-    /* width */
     &::-webkit-scrollbar {
         width: 5px;
     }
 
-    /* Track */
     &::-webkit-scrollbar-track {
         background: #353535;
         border-radius: 12px;
     }
 
-    /* Handle */
     &::-webkit-scrollbar-thumb {
         background: #b2b2b2;
     }
 
-    /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
         background: #ffffff;
     }
