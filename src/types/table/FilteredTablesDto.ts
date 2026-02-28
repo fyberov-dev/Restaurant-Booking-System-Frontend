@@ -1,8 +1,7 @@
 export enum TableRating {
-    BEST = "BEST",
+    PERFECT = "PERFECT",
     GOOD = "GOOD",
     BAD = "BAD",
-    WORST = "WORST",
     UNAVAILABLE = "UNAVAILABLE",
 }
 

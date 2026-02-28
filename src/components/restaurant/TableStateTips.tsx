@@ -13,10 +13,6 @@ const tips = [
     },
     {
         title: "Bad match",
-        color: "yellow",
-    },
-    {
-        title: "Worst match",
         color: "orange",
     },
     {

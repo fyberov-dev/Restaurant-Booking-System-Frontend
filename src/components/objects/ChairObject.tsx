@@ -7,7 +7,7 @@ interface ChairObjectProps {
 
 const ChairObject = ({ isReverse, state }: ChairObjectProps) => {
     const getStyle = () => {
-        if (state === TableRating.BEST) {
+        if (state === TableRating.PERFECT) {
             return "bg-purple-600/30 border border-purple-600/30";
         }
 
@@ -16,10 +16,6 @@ const ChairObject = ({ isReverse, state }: ChairObjectProps) => {
         }
 
         if (state === TableRating.BAD) {
-            return "bg-yellow-600/30 border border-yellow-600/30";
-        }
-
-        if (state === TableRating.WORST) {
             return "bg-orange-600/30 border border-orange-600/30";
         }
 

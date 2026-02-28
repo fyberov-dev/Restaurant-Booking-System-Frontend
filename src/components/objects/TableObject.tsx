@@ -10,7 +10,7 @@ interface TableObjectProps {
 
 const TableObject = ({ table, state, onClick }: TableObjectProps) => {
     const getStyle = () => {
-        if (state === TableRating.BEST) {
+        if (state === TableRating.PERFECT) {
             return "bg-purple-800/60 border-purple-600";
         }
 
@@ -19,10 +19,6 @@ const TableObject = ({ table, state, onClick }: TableObjectProps) => {
         }
 
         if (state === TableRating.BAD) {
-            return "bg-yellow-800/60 border-yellow-600";
-        }
-
-        if (state === TableRating.WORST) {
             return "bg-orange-800/60 border-orange-600";
         }
 
