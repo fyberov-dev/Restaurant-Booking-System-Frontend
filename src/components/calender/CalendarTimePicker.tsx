@@ -2,9 +2,7 @@ import { useContext, useState } from "react";
 import useAvailableHours from "../../hooks/calendar/useAvailableHours";
 import { BookingContext } from "../../context/BookingContext";
 import ResetIcon from "../../assets/icons/reset.svg";
-
-// TODO : SHOULD BE REQUESTED FROM THE SERVER. BUT CURRENTLY SERVER DOES NOT PROVIDE THAT
-const maxBookTime = 3;
+import useRestaurant from "../../hooks/restaurant/useRestaurant";
 
 interface CalendarTimePickerProps {
     startTime: Date | null;
@@ -24,6 +22,8 @@ const CalendarTimePicker = ({
     reset,
 }: CalendarTimePickerProps) => {
     const { bookedTables, clearBookedTables } = useContext(BookingContext);
+
+    const { data: restaurant, isLoading } = useRestaurant();
 
     const [clickCounter, setClickCounter] = useState<number>(0);
 
@@ -84,7 +84,7 @@ const CalendarTimePicker = ({
     };
 
     const isInsideMaxBookTime = (startTime: Date, endTime: Date) => {
-        return (endTime.getTime() - startTime.getTime()) / 1000 / 60 / 60 <= maxBookTime;
+        return (endTime.getTime() - startTime.getTime()) / 1000 / 60 / 60 <= restaurant?.maxBookHours;
     };
 
     const getStyle = (d: Date) => {
@@ -178,35 +178,39 @@ const CalendarTimePicker = ({
 
     return (
         <div className="relative w-full h-full flex flex-col overflow-hidden">
-            <div className="relative w-full h-full py-3 overflow-hidden">
-                <div className="relative w-full h-full grid grid-cols-3 ps-3 pe-3 gap-1 overflow-auto custom-scrollbar select-none">
-                    {availableHours?.map((d) => (
+            {!isLoading && (
+                <>
+                    <div className="relative w-full h-full py-3 overflow-hidden">
+                        <div className="relative w-full h-full grid grid-cols-3 ps-3 pe-3 gap-1 overflow-auto custom-scrollbar select-none">
+                            {availableHours?.map((d) => (
+                                <button
+                                    className={`transition-all active:scale-95 text-white p-2 flex items-center justify-center border border-gray-300 rounded-xl cursor-pointer ${getStyle(d)}`}
+                                    key={d.getTime()}
+                                    onClick={() => select(d)}
+                                    onMouseEnter={() => updateHoveredTime(d)}
+                                    onMouseLeave={() => removeHoveredTime()}
+                                >
+                                    {getTimings(d)}
+                                </button>
+                            ))}
+                        </div>
                         <button
-                            className={`transition-all active:scale-95 text-white p-2 flex items-center justify-center border border-gray-300 rounded-xl cursor-pointer ${getStyle(d)}`}
-                            key={d.getTime()}
-                            onClick={() => select(d)}
-                            onMouseEnter={() => updateHoveredTime(d)}
-                            onMouseLeave={() => removeHoveredTime()}
+                            className={`absolute transition-all left-3 bottom-3 p-1 rounded-lg bg-white/50 ring ring-white cursor-pointer ${startTime || endTime ? "opacity-100" : "translate-y-6 opacity-0"}`}
+                            onClick={reset}
                         >
-                            {getTimings(d)}
-                        </button>
-                    ))}
-                </div>
-                <button
-                    className={`absolute transition-all left-3 bottom-3 p-1 rounded-lg bg-white/50 ring ring-white cursor-pointer ${startTime || endTime ? "opacity-100" : "translate-y-6 opacity-0"}`}
-                    onClick={reset}
-                >
-                    <img src={ResetIcon} alt="Reset choice" />
+                            <img src={ResetIcon} alt="Reset choice" />
 
-                    {clickCounter > 5 && clickCounter < 10 && (
-                        <div className="absolute animate-[ping_3s_cubic-bezier(0,0.1,0,1)_infinite] w-full h-full bg-white left-1/2 top-1/2 -translate-1/2 rounded-lg"></div>
-                    )}
-                </button>
-            </div>
-            <div className="border-t border-gray-600 flex items-center justify-between py-2 px-3">
-                <p className="text-white">{getTempDuration()}</p>
-                <p className="text-white">Max reservation: 3 hours</p>
-            </div>
+                            {clickCounter > 5 && clickCounter < 10 && (
+                                <div className="absolute animate-[ping_3s_cubic-bezier(0,0.1,0,1)_infinite] w-full h-full bg-white left-1/2 top-1/2 -translate-1/2 rounded-lg"></div>
+                            )}
+                        </button>
+                    </div>
+                    <div className="border-t border-gray-600 flex items-center justify-between py-2 px-3">
+                        <p className="text-white">{getTempDuration()}</p>
+                        <p className="text-white">Max reservation: {restaurant?.maxBookHours} hours</p>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

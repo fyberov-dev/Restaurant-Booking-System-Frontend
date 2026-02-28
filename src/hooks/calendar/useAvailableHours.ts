@@ -1,14 +1,20 @@
-// TODO : MAKE IT NOT HARD CODED. These data should be requested from the server, but server currently does not provide them
-const minutesStep = 15;
-const openingHours = 10;
-const closingHours = 22;
+import useRestaurant from "../restaurant/useRestaurant";
 
 function useAvailableHours(date: Date) {
-    const closingDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), closingHours, 0, 0, 0);
+    const { data: restaurant, isLoading } = useRestaurant();
 
-    let currentDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), openingHours, 0, 0, 0);
+    if (isLoading || !restaurant) return [];
+
+    const openHours = +restaurant.openTime.split(":")[0];
+    const closeHours = +restaurant.closeTime.split(":")[0];
+
+    const closingDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), closeHours);
+    let currentDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), openHours);
 
     const arr: Date[] = [];
+
+    console.log(restaurant.openTime);
+    console.log(restaurant.closeTime);
 
     let i = 0;
     while (currentDate < closingDate) {
@@ -16,11 +22,10 @@ function useAvailableHours(date: Date) {
             date.getFullYear(),
             date.getMonth(),
             date.getDate(),
-            openingHours,
-            minutesStep * i,
-            0,
-            0,
+            openHours,
+            restaurant.timingsStep * i,
         );
+
         arr.push(currentDate);
         i++;
     }
