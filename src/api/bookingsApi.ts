@@ -1,10 +1,16 @@
 import axios from "axios";
-import type { Booking } from "../types/booking/Booking";
 import { PATHS } from "../constants/paths";
+import type { FilteredTablesDto } from "../types/table/FilteredTablesDto";
 
-const get = async ({ startTime, endTime }: { startTime: string; endTime: string }) => {
-    const response = await axios.get<Booking[]>(PATHS.GET_BOOKINGS, {
-        params: { startTime, endTime },
+type GetParams = {
+    startTime: string;
+    endTime: string;
+    guests: number;
+};
+
+const get = async ({ startTime, endTime, guests }: GetParams) => {
+    const response = await axios.get<FilteredTablesDto>(PATHS.GET_BOOKINGS, {
+        params: { startTime, endTime, guests },
     });
 
     return response.data;

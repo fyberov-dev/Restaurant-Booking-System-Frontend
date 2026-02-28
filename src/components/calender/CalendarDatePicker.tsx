@@ -40,7 +40,7 @@ const CalendarDatePicker = ({ selectedDate, updateSelectedDate }: CalendarDatePi
                         <img src={ChevronRight} alt="next month" />
                     </div>
                 </div>
-                <div className="grid grid-cols-7 gap-1">
+                <div className="grid grid-cols-7 gap-1 select-none">
                     {daysOfTheWeek.map((d, i) => (
                         <div className="px-3 flex items-center justify-center" key={i}>
                             <p className="text-white capitalize">{d}</p>

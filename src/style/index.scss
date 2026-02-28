@@ -2,10 +2,21 @@
     & > div {
         &:first-child > .table-div {
             border-radius: 3px 3px 0px 0px;
+            border-top-width: 1.5px;
         }
 
         &:last-child > .table-div {
             border-radius: 0px 0px 3px 3px;
+            border-bottom-width: 1.5px;
+        }
+
+        & > .table-div {
+            border-left-width: 1.5px;
+            border-right-width: 1.5px;
+        }
+
+        &:only-child > .table-div {
+            border-radius: 3px 3px 3px 3px;
         }
     }
 }
