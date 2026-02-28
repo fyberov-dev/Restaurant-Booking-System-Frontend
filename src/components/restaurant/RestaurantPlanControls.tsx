@@ -10,8 +10,8 @@ interface RestaurantPlanControlsProps {
 
 const RestaurantPlanControls = ({ zoomIn, zoomOut, resetTransform }: RestaurantPlanControlsProps) => {
     return (
-        <div className="absolute right-6 bottom-6 z-100 select-none">
-            <div className="relative flex gap-3">
+        <div className="absolute right-3 bottom-3 z-100 select-none">
+            <div className="relative flex gap-2">
                 <button
                     className="w-9 aspect-square flex items-center justify-center bg-white rounded-lg text-3xl cursor-pointer"
                     onClick={() => zoomIn()}

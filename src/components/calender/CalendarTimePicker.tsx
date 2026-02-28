@@ -84,7 +84,7 @@ const CalendarTimePicker = ({
     };
 
     const isInsideMaxBookTime = (startTime: Date, endTime: Date) => {
-        return (endTime.getTime() - startTime.getTime()) / 1000 / 60 / 60 <= restaurant?.maxBookHours;
+        return (endTime.getTime() - startTime.getTime()) / 1000 / 60 / 60 <= restaurant!.maxBookHours;
     };
 
     const getStyle = (d: Date) => {

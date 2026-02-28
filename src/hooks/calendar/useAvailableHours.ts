@@ -13,9 +13,6 @@ function useAvailableHours(date: Date) {
 
     const arr: Date[] = [];
 
-    console.log(restaurant.openTime);
-    console.log(restaurant.closeTime);
-
     let i = 0;
     while (currentDate < closingDate) {
         currentDate = new Date(

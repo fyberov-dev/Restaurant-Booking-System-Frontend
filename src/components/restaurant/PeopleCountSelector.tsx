@@ -13,7 +13,7 @@ const PeopleCountSelector = () => {
     };
 
     return (
-        <div className="absolute left-3 bottom-3 px-3 py-2 gap-3 flex flex-col bg-neutral-900/30 rounded-lg ring ring-gray-600 z-100">
+        <div className="absolute left-3 bottom-3 px-3 py-2 gap-3 flex flex-col bg-neutral-900/30 rounded-lg ring ring-gray-600 z-100 backdrop-blur-xs">
             <p className="text-white">People count:</p>
             <div className="flex w-full justify-between gap-1">
                 <button

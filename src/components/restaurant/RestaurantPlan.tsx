@@ -8,6 +8,7 @@ import TableStateTips from "./TableStateTips";
 import RestaurantPlanControls from "./RestaurantPlanControls";
 import MouseIcon from "../../assets/icons/mouse.svg";
 import PeopleCountSelector from "./PeopleCountSelector";
+import useTypes from "../../hooks/table/useTypes";
 
 const RestaurantPlan = () => {
     console.log("[LOG] [RestaurantPlan] Rerendered");
@@ -17,6 +18,8 @@ const RestaurantPlan = () => {
     const { bookedTables, isPlanActive, setIsPlanActive } = useContext(BookingContext);
 
     const { data: tables } = useTables();
+
+    const types = useTypes();
 
     const transformWrapperRef = useRef<ReactZoomPanPinchContentRef | null>(null);
 
@@ -49,6 +52,17 @@ const RestaurantPlan = () => {
             <TransformWrapper ref={transformWrapperRef} minScale={0.6} centerOnInit={true}>
                 {({ zoomIn, zoomOut, resetTransform }) => (
                     <>
+                        <div className="absolute left-3 top-24 flex flex-col gap-3 z-100 bg-neutral-900/30 backdrop-blur-xs ring ring-gray-600 p-3 rounded-xl">
+                            <p className="text-md text-white">Select table type:</p>
+                            {Object.entries(types).map(([key, value]) => (
+                                <div
+                                    className="px-3 py-1 bg-gray-800/60 ring ring-gray-600 rounded-lg select-none cursor-pointer"
+                                    key={key}
+                                >
+                                    <p className="text-white text-md">{value}</p>
+                                </div>
+                            ))}
+                        </div>
                         <TableStateTips show={Object.keys(bookedTables).length !== 0} />
                         <RestaurantPlanControls zoomIn={zoomIn} zoomOut={zoomOut} resetTransform={resetTransform} />
                         <PeopleCountSelector />
