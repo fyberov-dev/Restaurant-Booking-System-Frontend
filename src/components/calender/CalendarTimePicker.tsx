@@ -181,7 +181,7 @@ const CalendarTimePicker = ({
             {!isLoading && (
                 <>
                     <div className="relative w-full h-full py-3 overflow-hidden">
-                        <div className="relative w-full h-full grid grid-cols-3 ps-3 pe-3 gap-1 overflow-auto custom-scrollbar select-none">
+                        <div className="relative w-full h-full grid grid-cols-2 ps-3 pe-3 gap-1 overflow-auto custom-scrollbar select-none">
                             {availableHours?.map((d) => (
                                 <button
                                     className={`transition-all active:scale-95 text-white p-2 flex items-center justify-center border border-gray-300 rounded-xl cursor-pointer ${getStyle(d)}`}

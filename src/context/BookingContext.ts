@@ -17,6 +17,9 @@ export interface BookingContextType {
     selectedGuests: number;
     updateSelectedGuests: (guests: number) => void;
 
+    selectedType: string | null;
+    setSelectedType: (type: string | null) => void;
+
     clearBookedTables: () => void;
 }
 
@@ -35,6 +38,9 @@ export const BookingContext = createContext<BookingContextType>({
 
     selectedGuests: 2,
     updateSelectedGuests: () => undefined,
+
+    selectedType: null,
+    setSelectedType: () => undefined,
 
     clearBookedTables: () => undefined,
 });

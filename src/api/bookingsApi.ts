@@ -6,11 +6,12 @@ type GetParams = {
     startTime: string;
     endTime: string;
     guests: number;
+    type: string | null;
 };
 
-const get = async ({ startTime, endTime, guests }: GetParams) => {
+const get = async ({ startTime, endTime, guests, type }: GetParams) => {
     const response = await axios.get<FilteredTablesDto>(PATHS.GET_BOOKINGS, {
-        params: { startTime, endTime, guests },
+        params: { startTime, endTime, guests, type },
     });
 
     return response.data;

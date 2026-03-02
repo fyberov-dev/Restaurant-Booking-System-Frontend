@@ -16,6 +16,7 @@ const BookingProvider = ({ children }: BookingProviderType) => {
     const [startTime, setStartTime] = useState<Date | null>(null);
     const [endTime, setEndTime] = useState<Date | null>(null);
     const [selectedGuests, setSelectedGuests] = useState<number>(2);
+    const [selectedType, setSelectedType] = useState<string | null>(null);
 
     const updateSelectedGuests = (guests: number) => {
         if (guests > 0) {
@@ -44,6 +45,7 @@ const BookingProvider = ({ children }: BookingProviderType) => {
                     startTime: startTimeStr,
                     endTime: endTimeStr,
                     guests: selectedGuests,
+                    type: selectedType,
                 },
                 {
                     onSuccess: (b) => {
@@ -53,7 +55,7 @@ const BookingProvider = ({ children }: BookingProviderType) => {
                 },
             );
         }
-    }, [startTime, endTime, selectedGuests, getBookingsMutate, setBookedTables, setIsPlanActive]);
+    }, [startTime, endTime, selectedGuests, selectedType, getBookingsMutate, setBookedTables, setIsPlanActive]);
 
     return (
         <BookingContext.Provider
@@ -68,6 +70,8 @@ const BookingProvider = ({ children }: BookingProviderType) => {
                     endTime,
                     setEndTime,
                     selectedGuests,
+                    selectedType,
+                    setSelectedType,
                     updateSelectedGuests,
                     clearBookedTables,
                 } satisfies BookingContextType

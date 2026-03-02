@@ -1,24 +1,107 @@
-.table {
-    & > div {
-        &:first-child > .table-div {
-            border-radius: 3px 3px 0px 0px;
-            border-top-width: 1.5px;
-        }
+.restaurant-table {
+    & > div:only-child > .table-div {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+    }
 
-        &:last-child > .table-div {
-            border-radius: 0px 0px 3px 3px;
-            border-bottom-width: 1.5px;
-        }
+    &.vertical-table {
+        flex-direction: row;
 
-        & > .table-div {
-            border-left-width: 1.5px;
-            border-right-width: 1.5px;
-        }
+        & > div {
+            flex-direction: column;
 
-        &:only-child > .table-div {
-            border-radius: 3px 3px 3px 3px;
+            & > .table-div {
+                width: 32px;
+                height: 42px;
+                border-top-width: 1.5px;
+                border-bottom-width: 1.5px;
+            }
+
+            &:first-child > .table-div {
+                border-radius: 3px 0px 0px 3px;
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+                border-left-width: 1.5px;
+            }
+
+            &:last-child > .table-div {
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+                border-right-width: 1.5px;
+            }
+
+            & > .chair {
+                width: 16px;
+                height: 8px;
+                border-radius: 3px 3px 0px 0px;
+
+                &.reverse {
+                    border-radius: 0px 0px 3px 3px;
+                }
+            }
         }
     }
+
+    &:not(.vertical-table) {
+        flex-direction: column;
+
+        & > div {
+            flex-direction: row;
+
+            & > .table-div {
+                width: 42px;
+                height: 32px;
+                border-left-width: 1.5px;
+                border-right-width: 1.5px;
+            }
+
+            &:first-child > .table-div {
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                border-top-width: 1.5px;
+            }
+
+            &:last-child > .table-div {
+                border-bottom-left-radius: 3px;
+                border-bottom-right-radius: 3px;
+                border-bottom-width: 1.5px;
+            }
+
+            & > .chair {
+                width: 8px;
+                height: 16px;
+
+                border-radius: 3px 0px 0px 3px;
+
+                &.reverse {
+                    border-radius: 0px 3px 3px 0px;
+                }
+            }
+        }
+    }
+
+    // & > div {
+    //     &:first-child > .table-div {
+    //         border-radius: 3px 3px 0px 0px;
+    //         border-top-width: 1.5px;
+    //     }
+
+    //     &:last-child > .table-div {
+    //         border-radius: 0px 0px 3px 3px;
+    //         border-bottom-width: 1.5px;
+    //     }
+
+    //     & > .table-div {
+    //         border-left-width: 1.5px;
+    //         border-right-width: 1.5px;
+    //     }
+
+    //     &:only-child > .table-div {
+    //         border-radius: 3px 3px 3px 3px;
+    //     }
+    // }
 }
 
 .custom-scrollbar {
