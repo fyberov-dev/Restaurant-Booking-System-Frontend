@@ -80,54 +80,47 @@ const CalendarTimePicker = ({
         return (endTime.getTime() - startTime.getTime()) / 1000 / 60 / 60 <= restaurant!.maxBookHours;
     };
 
-    const getStyle = (d: Date) => {
-        if (d.getTime() === startTime?.getTime()) {
+    const getStyle = (date: Date) => {
+        if (date.getTime() === startTime?.getTime()) {
             return "bg-blue-800/60";
         }
-
         if (
             startTime &&
             hoveredTime &&
-            d <= hoveredTime &&
-            d > startTime &&
-            isInsideMaxBookTime(startTime, d) &&
+            date <= hoveredTime &&
+            date > startTime &&
+            isInsideMaxBookTime(startTime, date) &&
             isInsideMaxBookTime(startTime, hoveredTime)
         ) {
-            if (!endTime || (endTime && endTime.getTime() !== d.getTime())) {
+            if (!endTime || (endTime && endTime.getTime() !== date.getTime())) {
                 return "bg-blue-800/30";
             }
         }
-
-        if (d.getTime() === endTime?.getTime()) {
+        if (date.getTime() === endTime?.getTime()) {
             return "bg-blue-700/60";
         }
-
-        if (startTime && startTime < d && endTime && endTime > d) {
-            if (isStartTimingCloser(d)) {
+        if (startTime && startTime < date && endTime && endTime > date) {
+            if (isStartTimingCloser(date)) {
                 return "bg-blue-600/20 hover:bg-blue-600/20 active:bg-blue-600/40";
             } else {
                 return "bg-blue-600/15 hover:bg-blue-700/20 active:bg-blue-700/40";
             }
         }
-
-        if (startTime && d > startTime && isInsideMaxBookTime(startTime, d)) {
+        if (startTime && date > startTime && isInsideMaxBookTime(startTime, date)) {
             return "bg-gray-600/10 opacity-80 hover:bg-gray-600/60 active:bg-gray-600/100";
         }
-
         if (
             endTime &&
             startTime &&
-            d < startTime &&
-            d.getTime() != startTime.getTime() &&
-            isInsideMaxBookTime(d, endTime)
+            date < startTime &&
+            date.getTime() != startTime.getTime() &&
+            isInsideMaxBookTime(date, endTime)
         ) {
             return "bg-gray-600/10 opacity-80 hover:bg-gray-600/60 active:bg-gray-600/100";
         }
-
-        if (startTime && (d < startTime || !isInsideMaxBookTime(startTime, d))) {
+        if (startTime && (date < startTime || !isInsideMaxBookTime(startTime, date))) {
             return "opacity-30 hover:opacity-60 active:opacity-100";
         }
-
         return "bg-gray-600/10 hover:bg-gray-600/50";
     };
 

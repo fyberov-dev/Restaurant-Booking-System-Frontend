@@ -29,7 +29,17 @@ function useCalendar() {
     }, [year, month]);
 
     const prevMonth = () => {
+        const prevMonth = new Date(year, month - 1, now.getDate());
+
+        if (isBeforeCurrentMonth(prevMonth)) {
+            return;
+        }
+
         setSelectedMonth(new Date(year, month - 1, now.getDate()));
+    };
+
+    const isBeforeCurrentMonth = (date: Date) => {
+        return date.getMonth() < now.getMonth() && date.getFullYear() === now.getFullYear();
     };
 
     const nextMonth = () => {

@@ -21,11 +21,19 @@ const CalendarDatePicker = ({ selectedDate, updateSelectedDate }: CalendarDatePi
             return "bg-blue-400/40 text-white";
         }
 
-        if (date.getMonth() != selectedMonth.getMonth()) {
+        if (date.getMonth() != selectedMonth.getMonth() || date < now) {
             return "opacity-30 hover:bg-gray-600/50 active:bg-blue-600 text-white";
         }
 
         return "hover:bg-gray-600/50 active:bg-blue-600 text-white";
+    };
+
+    const selectDate = (date: Date) => {
+        if (date.getTime() <= now.getTime() && date.getDate() !== now.getDate()) {
+            return;
+        }
+
+        updateSelectedDate(date);
     };
 
     return (
@@ -50,7 +58,7 @@ const CalendarDatePicker = ({ selectedDate, updateSelectedDate }: CalendarDatePi
                         <div
                             className={`transition-all p-1 active:scale-90 border border-gray-300/10 flex items-center justify-center rounded-lg cursor-pointer ${getStyle(d)}`}
                             key={i}
-                            onClick={() => updateSelectedDate(d)}
+                            onClick={() => selectDate(d)}
                         >
                             <p>{d.getDate()}</p>
                         </div>

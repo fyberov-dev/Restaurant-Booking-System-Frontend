@@ -6,7 +6,7 @@ import type { AxiosError } from "axios";
 import type { ErrorResponse } from "../../types/api/ApiResponse";
 
 const BookingTab = () => {
-    const { selectedTable, setSelectedTable, startTime, endTime } = useContext(BookingContext);
+    const { selectedTable, setSelectedTable, fetchBookings, startTime, endTime } = useContext(BookingContext);
 
     const [phone, setPhone] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -49,6 +49,7 @@ const BookingTab = () => {
                 {
                     onSuccess: () => {
                         setResponseMessage("Table reservation succeed");
+                        fetchBookings();
                     },
                     onError: (e: AxiosError<ErrorResponse>) => {
                         setResponseMessage(e.response?.data.detail ?? "");
@@ -56,6 +57,12 @@ const BookingTab = () => {
                 },
             );
         setSelectedTable(null);
+        resetForm();
+    };
+
+    const resetForm = () => {
+        setPhone("");
+        setEmail("");
     };
 
     return (
@@ -100,6 +107,7 @@ const BookingTab = () => {
                                     type="text"
                                     className="px-3 py-2 ring ring-gray-600 bg-gray-800/30 placeholder:text-gray-300/30 text-white rounded-lg"
                                     placeholder="+372 XXXX XXXX"
+                                    value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
                                 />
                             </div>
@@ -109,6 +117,7 @@ const BookingTab = () => {
                                     type="email"
                                     className="px-3 py-2 ring ring-gray-600 bg-gray-800/30 placeholder:text-gray-300/30 text-white rounded-lg"
                                     placeholder="example@gmail.com"
+                                    value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>

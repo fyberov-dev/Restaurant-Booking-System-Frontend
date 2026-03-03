@@ -24,6 +24,8 @@ export interface BookingContextType {
     selectedTable: Table | null;
     setSelectedTable: (table: Table | null) => void;
 
+    fetchBookings: () => void;
+
     clearBookedTables: () => void;
 }
 
@@ -48,6 +50,8 @@ export const BookingContext = createContext<BookingContextType>({
 
     selectedTable: null,
     setSelectedTable: () => undefined,
+
+    fetchBookings: () => undefined,
 
     clearBookedTables: () => undefined,
 });

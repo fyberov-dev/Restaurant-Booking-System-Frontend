@@ -1,6 +1,6 @@
 import type React from "react";
 import { BookingContext, type BookingContextType } from "../BookingContext";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { FilteredTablesDto } from "../../types/table/FilteredTablesDto";
 import useBookings from "../../hooks/booking/useBookings";
 import type { Table } from "../../types/table/Table";
@@ -37,27 +37,31 @@ const BookingProvider = ({ children }: BookingProviderType) => {
         setIsPlanActive(true);
     };
 
-    useEffect(() => {
-        if (startTime && endTime) {
-            const startTimeStr = startTime.toISOString();
-            const endTimeStr = endTime.toISOString();
+    const fetchBookings = useCallback(() => {
+        if (!startTime || !endTime) return;
 
-            getBookingsMutate(
-                {
-                    startTime: startTimeStr,
-                    endTime: endTimeStr,
-                    guests: selectedGuests,
-                    type: selectedType,
+        const startTimeStr = startTime.toISOString();
+        const endTimeStr = endTime.toISOString();
+
+        getBookingsMutate(
+            {
+                startTime: startTimeStr,
+                endTime: endTimeStr,
+                guests: selectedGuests,
+                type: selectedType,
+            },
+            {
+                onSuccess: (b) => {
+                    setBookedTables(b);
+                    setIsPlanActive(true);
                 },
-                {
-                    onSuccess: (b) => {
-                        setBookedTables(b);
-                        setIsPlanActive(true);
-                    },
-                },
-            );
-        }
-    }, [startTime, endTime, selectedGuests, selectedType, getBookingsMutate, setBookedTables, setIsPlanActive]);
+            },
+        );
+    }, [startTime, endTime, selectedGuests, selectedType, getBookingsMutate]);
+
+    useEffect(() => {
+        fetchBookings();
+    }, [startTime, endTime, fetchBookings, selectedGuests, selectedType]);
 
     return (
         <BookingContext.Provider
@@ -76,6 +80,7 @@ const BookingProvider = ({ children }: BookingProviderType) => {
                     setSelectedType,
                     selectedTable,
                     setSelectedTable,
+                    fetchBookings,
                     updateSelectedGuests,
                     clearBookedTables,
                 } satisfies BookingContextType
