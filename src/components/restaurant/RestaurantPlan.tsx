@@ -8,18 +8,16 @@ import TableStateTips from "./TableStateTips";
 import RestaurantPlanControls from "./RestaurantPlanControls";
 import MouseIcon from "../../assets/icons/mouse.svg";
 import PeopleCountSelector from "./PeopleCountSelector";
-import useTypes from "../../hooks/table/useTypes";
+import TableTypeSelect from "./TableTypeSelect";
+import type { Table } from "../../types/table/Table";
 
 const RestaurantPlan = () => {
     console.log("[LOG] [RestaurantPlan] Rerendered");
 
-    const [selectedTable, setSelectedTable] = useState<number | null>(null);
-
-    const { bookedTables, isPlanActive, setIsPlanActive, selectedType, setSelectedType } = useContext(BookingContext);
+    const { startTime, endTime, bookedTables, isPlanActive, setIsPlanActive, selectedTable, setSelectedTable } =
+        useContext(BookingContext);
 
     const { data: tables } = useTables();
-
-    const types = useTypes();
 
     const transformWrapperRef = useRef<ReactZoomPanPinchContentRef | null>(null);
 
@@ -39,85 +37,75 @@ const RestaurantPlan = () => {
         setY(Math.round(y));
     };
 
-    const selectTable = (tableId: number) => {
-        setSelectedTable(tableId);
+    const selectTable = (table: Table | null) => {
+        if (table === null) {
+            setSelectedTable(null);
+        } else if (startTime && endTime && bookedTables[table.id] !== "UNAVAILABLE") {
+            setSelectedTable(table);
+        }
     };
 
     return (
-        <div className="relative w-full h-full">
-            <div className="absolute right-6 top-6 z-100">
-                <p className="text-xl text-white">x: {x}</p>
-                <p className="text-xl text-white">y: {y}</p>
-            </div>
-            <TransformWrapper ref={transformWrapperRef} minScale={0.6} centerOnInit={true}>
-                {({ zoomIn, zoomOut, resetTransform }) => (
-                    <>
-                        <div className="absolute left-3 top-3 flex flex-col gap-3 z-100 bg-neutral-900/30 backdrop-blur-xs ring ring-gray-600 p-3 rounded-xl">
-                            <p className="text-md text-white">Select table type:</p>
-                            <button
-                                className={`transition-all px-3 py-1 ring ring-gray-600 rounded-lg select-none cursor-pointer ${!selectedType ? "bg-blue-600/60" : "bg-gray-800/30"}`}
-                                onClick={() => setSelectedType(null)}
-                            >
-                                <p className="text-white text-md">Any</p>
-                            </button>
-                            {Object.entries(types).map(([key, value]) => (
-                                <button
-                                    className={`transition-all px-3 py-1 ring ring-gray-600 rounded-lg select-none cursor-pointer ${key === selectedType ? "bg-blue-600/60" : "bg-gray-800/30"}`}
-                                    key={key}
-                                    onClick={() => setSelectedType(key)}
-                                >
-                                    <p className="text-white text-md">{value}</p>
-                                </button>
-                            ))}
-                        </div>
-                        <TableStateTips show={Object.keys(bookedTables).length !== 0} />
-                        <RestaurantPlanControls zoomIn={zoomIn} zoomOut={zoomOut} resetTransform={resetTransform} />
-                        <PeopleCountSelector />
-                        <TransformComponent
-                            wrapperStyle={{
-                                position: "relative",
-                                width: "100%",
-                                height: "100%",
-                            }}
-                        >
-                            <div className="w-full h-full" onMouseMove={handleOnMouseMove}>
-                                <div
-                                    style={{
-                                        width: "760px",
-                                        height: "660px",
-                                    }}
-                                >
-                                    <img src={MapImage} alt="" />
-                                </div>
-                                {tables?.map((t) => {
-                                    return (
-                                        <TableObject
-                                            table={t}
-                                            key={t.id}
-                                            state={bookedTables[t.id]}
-                                            onClick={selectTable}
-                                        ></TableObject>
-                                    );
-                                })}
-                            </div>
-                        </TransformComponent>
-                    </>
-                )}
-            </TransformWrapper>
-            {!isPlanActive && (
-                <div
-                    className="absolute left-0 top-0 w-full h-full z-90 flex items-center justify-center"
-                    onWheel={() => setIsPlanActive(true)}
-                    onClick={() => setIsPlanActive(true)}
-                >
-                    <div className="flex gap-2 items-center z-91 animate-bounce">
-                        <img src={MouseIcon} alt="Scroll with a mouse to start using" />
-                        <p className="text-xl text-white">Scroll with a mouse to start using (or just click)</p>
-                    </div>
-                    <div className="absolute left-0 top-0 w-full h-full bg-neutral-950/70 animate-pulse"></div>
+        <>
+            <div className="relative w-full h-full">
+                <div className="absolute right-6 top-6 z-100">
+                    <p className="text-xl text-white">x: {x}</p>
+                    <p className="text-xl text-white">y: {y}</p>
                 </div>
-            )}
-        </div>
+                <TransformWrapper ref={transformWrapperRef} minScale={0.6} centerOnInit={true}>
+                    {({ zoomIn, zoomOut, resetTransform }) => (
+                        <>
+                            <TableTypeSelect />
+                            <TableStateTips show={Object.keys(bookedTables).length !== 0} />
+                            <RestaurantPlanControls zoomIn={zoomIn} zoomOut={zoomOut} resetTransform={resetTransform} />
+                            <PeopleCountSelector />
+                            <TransformComponent
+                                wrapperStyle={{
+                                    position: "relative",
+                                    width: "100%",
+                                    height: "100%",
+                                }}
+                            >
+                                <div className="w-full h-full" onMouseMove={handleOnMouseMove}>
+                                    <div
+                                        style={{
+                                            width: "760px",
+                                            height: "660px",
+                                        }}
+                                    >
+                                        <img src={MapImage} alt="" />
+                                    </div>
+                                    {tables?.map((t) => {
+                                        return (
+                                            <TableObject
+                                                table={t}
+                                                key={t.id}
+                                                state={bookedTables[t.id]}
+                                                isSelected={selectedTable?.id === t.id}
+                                                onClick={selectTable}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </TransformComponent>
+                        </>
+                    )}
+                </TransformWrapper>
+                {!isPlanActive && (
+                    <div
+                        className="absolute left-0 top-0 w-full h-full z-90 flex items-center justify-center"
+                        onWheel={() => setIsPlanActive(true)}
+                        onClick={() => setIsPlanActive(true)}
+                    >
+                        <div className="flex gap-2 items-center z-91 animate-bounce">
+                            <img src={MouseIcon} alt="Scroll with a mouse to start using" />
+                            <p className="text-xl text-white">Scroll with a mouse to start using (or just click)</p>
+                        </div>
+                        <div className="absolute left-0 top-0 w-full h-full bg-neutral-950/70 animate-pulse"></div>
+                    </div>
+                )}
+            </div>
+        </>
     );
 };
 

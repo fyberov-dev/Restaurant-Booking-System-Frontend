@@ -3,6 +3,7 @@ import useAvailableHours from "../../hooks/calendar/useAvailableHours";
 import { BookingContext } from "../../context/BookingContext";
 import ResetIcon from "../../assets/icons/reset.svg";
 import useRestaurant from "../../hooks/restaurant/useRestaurant";
+import { getDuration, getTiming } from "../../util/timeUtil";
 
 interface CalendarTimePickerProps {
     startTime: Date | null;
@@ -30,14 +31,6 @@ const CalendarTimePicker = ({
     const [hoveredTime, setHoveredTime] = useState<Date | null>(null);
 
     const availableHours = useAvailableHours(selectedDate);
-
-    const getTimings = (date: Date) => {
-        return `${formatTiming(date.getHours())}:${formatTiming(date.getMinutes())}`;
-    };
-
-    const formatTiming = (num: number) => {
-        return num <= 9 ? `0${num}` : String(num);
-    };
 
     const select = (d: Date) => {
         if (startTime?.getTime() === d.getTime() || endTime?.getTime() === d.getTime()) {
@@ -153,15 +146,7 @@ const CalendarTimePicker = ({
             return "";
         }
 
-        const startTimeMs = startTime.getTime();
-        const hoveredTimeMs = end.getTime();
-
-        const durationMs = hoveredTimeMs - startTimeMs;
-
-        const hours = Math.floor(durationMs / 1000 / 60 / 60);
-        const minutes = Math.floor(durationMs / 1000 / 60) % 60;
-
-        return (hours > 0 ? hours + "h" : "") + (minutes > 0 ? minutes + "min" : "");
+        return getDuration(startTime, end);
     };
 
     const updateHoveredTime = (d: Date) => {
@@ -190,12 +175,12 @@ const CalendarTimePicker = ({
                                     onMouseEnter={() => updateHoveredTime(d)}
                                     onMouseLeave={() => removeHoveredTime()}
                                 >
-                                    {getTimings(d)}
+                                    {getTiming(d)}
                                 </button>
                             ))}
                         </div>
                         <button
-                            className={`absolute transition-all left-3 bottom-3 p-1 rounded-lg bg-white/50 ring ring-white cursor-pointer ${startTime || endTime ? "opacity-100" : "translate-y-6 opacity-0"}`}
+                            className={`absolute transition-all left-3 bottom-3 p-1 rounded-lg bg-white/50 ring ring-white cursor-pointer ${startTime || endTime ? "opacity-100 block" : "translate-y-6 opacity-0"}`}
                             onClick={reset}
                         >
                             <img src={ResetIcon} alt="Reset choice" />

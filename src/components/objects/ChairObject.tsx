@@ -3,10 +3,15 @@ import type { TableRating } from "../../types/table/FilteredTablesDto";
 interface ChairObjectProps {
     isReverse?: boolean;
     state: TableRating | null;
+    isSelected: boolean;
 }
 
-const ChairObject = ({ isReverse, state }: ChairObjectProps) => {
+const ChairObject = ({ isReverse, state, isSelected }: ChairObjectProps) => {
     const getStyle = () => {
+        if (isSelected) {
+            return "bg-blue-600/30 border border-blue-600/30";
+        }
+
         if (state === "PERFECT") {
             return "bg-purple-600/30 border border-purple-600/30";
         }
@@ -16,7 +21,7 @@ const ChairObject = ({ isReverse, state }: ChairObjectProps) => {
         }
 
         if (state === "BAD") {
-            return "bg-orange-600/30 border border-orange-600/30";
+            return "bg-yellow-600/30 border border-yellow-600/30";
         }
 
         if (state === "UNAVAILABLE") {

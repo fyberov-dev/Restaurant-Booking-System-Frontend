@@ -5,4 +5,5 @@ export const QUERY_KEYS = {
 
 export const MUTATION_KEYS = {
     GET_BOOKINGS: "GET_BOOKINGS",
+    POST_BOOKING: "POST_BOOKING",
 } as const;

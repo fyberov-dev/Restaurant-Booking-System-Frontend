@@ -3,6 +3,7 @@ import { BookingContext, type BookingContextType } from "../BookingContext";
 import { useEffect, useState } from "react";
 import type { FilteredTablesDto } from "../../types/table/FilteredTablesDto";
 import useBookings from "../../hooks/booking/useBookings";
+import type { Table } from "../../types/table/Table";
 
 interface BookingProviderType {
     children: React.ReactNode;
@@ -17,6 +18,7 @@ const BookingProvider = ({ children }: BookingProviderType) => {
     const [endTime, setEndTime] = useState<Date | null>(null);
     const [selectedGuests, setSelectedGuests] = useState<number>(2);
     const [selectedType, setSelectedType] = useState<string | null>(null);
+    const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
     const updateSelectedGuests = (guests: number) => {
         if (guests > 0) {
@@ -72,6 +74,8 @@ const BookingProvider = ({ children }: BookingProviderType) => {
                     selectedGuests,
                     selectedType,
                     setSelectedType,
+                    selectedTable,
+                    setSelectedTable,
                     updateSelectedGuests,
                     clearBookedTables,
                 } satisfies BookingContextType

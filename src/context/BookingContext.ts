@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import type { FilteredTablesDto } from "../types/table/FilteredTablesDto";
+import type { Table } from "../types/table/Table";
 
 export interface BookingContextType {
     bookedTables: FilteredTablesDto;
@@ -19,6 +20,9 @@ export interface BookingContextType {
 
     selectedType: string | null;
     setSelectedType: (type: string | null) => void;
+
+    selectedTable: Table | null;
+    setSelectedTable: (table: Table | null) => void;
 
     clearBookedTables: () => void;
 }
@@ -41,6 +45,9 @@ export const BookingContext = createContext<BookingContextType>({
 
     selectedType: null,
     setSelectedType: () => undefined,
+
+    selectedTable: null,
+    setSelectedTable: () => undefined,
 
     clearBookedTables: () => undefined,
 });

@@ -5,11 +5,16 @@ import ChairObject from "./ChairObject";
 interface TableObjectProps {
     table: Table;
     state: TableRating | null;
-    onClick: (tableId: number) => void;
+    isSelected: boolean;
+    onClick: (table: Table | null) => void;
 }
 
-const TableObject = ({ table, state, onClick }: TableObjectProps) => {
+const TableObject = ({ table, state, isSelected, onClick }: TableObjectProps) => {
     const getStyle = () => {
+        if (isSelected) {
+            return "bg-blue-800/60 border-blue-600";
+        }
+
         if (state === "PERFECT") {
             return "bg-purple-800/60 border-purple-600";
         }
@@ -19,7 +24,7 @@ const TableObject = ({ table, state, onClick }: TableObjectProps) => {
         }
 
         if (state === "BAD") {
-            return "bg-orange-800/60 border-orange-600";
+            return "bg-yellow-800/60 border-yellow-600";
         }
 
         if (state === "UNAVAILABLE") {
@@ -36,13 +41,13 @@ const TableObject = ({ table, state, onClick }: TableObjectProps) => {
                 left: `${table.x}px`,
                 top: `${table.y}px`,
             }}
-            onClick={() => onClick(table.id)}
+            onClick={() => onClick(table)}
         >
             {[...Array(table.guests / 2)].map((_, i) => (
                 <div className="relative flex items-center justify-center" key={i}>
-                    <ChairObject state={state} />
+                    <ChairObject state={state} isSelected={isSelected} />
                     <div className={`table-div transition-all table-div ${getStyle()}`}></div>
-                    <ChairObject state={state} isReverse />
+                    <ChairObject state={state} isSelected={isSelected} isReverse />
                 </div>
             ))}
         </div>
