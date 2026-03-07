@@ -4,6 +4,12 @@ Reservation system for a restaurant with a filtering functionality and customiza
 
 ## 0. Content
 
+- [1. Tech Stack](#1-tech-stack)
+- [2. Setup](#2-setup)
+    - [2.1. Run locally](#21-run-locally)
+    - [2.2. Run using docker](#22-run-using-docker)
+- [3. Usage](#3-usage)
+
 Backend: https://github.com/fyberov-dev/Restaurant-Booking-System-Backend
 
 ## 1. Tech Stack
@@ -17,7 +23,9 @@ Backend: https://github.com/fyberov-dev/Restaurant-Booking-System-Backend
 
 ## 2. Setup
 
-First of all, you need to clone a repository using:
+First of all, you need to clone and start backend repository: https://github.com/fyberov-dev/Restaurant-Booking-System-Backend
+
+You need to clone a repository using:
 
 1. HTTPS,
 
