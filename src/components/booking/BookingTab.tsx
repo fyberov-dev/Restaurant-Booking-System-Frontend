@@ -68,77 +68,79 @@ const BookingTab = () => {
     return (
         <>
             {selectedTable && (
-                <div className="relative h-full flex flex-col justify-between border border-gray-600 rounded-xl bg-neutral-950/80 backdrop-blur-xs z-300">
-                    <header className="p-3 border-b border-gray-600">
-                        <h3 className="text-white">Selected table</h3>
-                    </header>
-                    <main className="h-full flex flex-col gap-3">
-                        <div className="flex flex-col gap-3 border-b border-gray-600 p-3">
-                            <h4 className="text-white text-xl">Table data:</h4>
-                            <div className="flex flex-col gap-1">
-                                <p className="text-white">Guests number: {selectedTable?.guests}</p>
-                                <p className="text-white/40">
-                                    * up to {selectedTable.guests + 2} guest by adding additional chairs
-                                </p>
+                <div className="pr-3 py-3">
+                    <div className="relative h-full flex flex-col justify-between border border-gray-600 rounded-xl bg-neutral-950/80 backdrop-blur-xs z-300">
+                        <header className="p-3 border-b border-gray-600">
+                            <h3 className="text-white">Selected table</h3>
+                        </header>
+                        <main className="h-full flex flex-col gap-3">
+                            <div className="flex flex-col gap-3 border-b border-gray-600 p-3">
+                                <h4 className="text-white text-xl">Table data:</h4>
+                                <div className="flex flex-col gap-1">
+                                    <p className="text-white">Guests number: {selectedTable?.guests}</p>
+                                    <p className="text-white/40">
+                                        * up to {selectedTable.guests + 2} guest by adding additional chairs
+                                    </p>
+                                </div>
+                                {!!selectedTable.types.length && (
+                                    <>
+                                        <p className="text-white">Types:</p>
+                                        <ul className="list-disc list-inside text-white flex flex-col gap-2">
+                                            {selectedTable.types.map((t) => (
+                                                <li>{t.title}</li>
+                                            ))}
+                                        </ul>
+                                    </>
+                                )}
+                                {startTime && endTime && (
+                                    <p className="text-white/80">
+                                        From <span className="text-white font-bold">{getTiming(startTime)}</span> to{" "}
+                                        <span className="text-white font-bold">{getTiming(endTime)}</span>
+                                        <span className="text-white/40">({getDuration(startTime, endTime)})</span>
+                                    </p>
+                                )}
                             </div>
-                            {!!selectedTable.types.length && (
-                                <>
-                                    <p className="text-white">Types:</p>
-                                    <ul className="list-disc list-inside text-white flex flex-col gap-2">
-                                        {selectedTable.types.map((t) => (
-                                            <li>{t.title}</li>
-                                        ))}
-                                    </ul>
-                                </>
-                            )}
-                            {startTime && endTime && (
-                                <p className="text-white/80">
-                                    From <span className="text-white font-bold">{getTiming(startTime)}</span> to{" "}
-                                    <span className="text-white font-bold">{getTiming(endTime)}</span>
-                                    <span className="text-white/40">({getDuration(startTime, endTime)})</span>
-                                </p>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-3 px-3">
-                            <div className="flex flex-col gap-3">
-                                <p className="text-white">Phone number:</p>
-                                <input
-                                    name="phone"
-                                    type="text"
-                                    className="px-3 py-2 ring ring-gray-600 bg-gray-800/30 placeholder:text-gray-300/30 text-white rounded-lg"
-                                    placeholder="+372 XXXX XXXX"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                />
+                            <div className="flex flex-col gap-3 px-3">
+                                <div className="flex flex-col gap-3">
+                                    <p className="text-white">Phone number:</p>
+                                    <input
+                                        name="phone"
+                                        type="text"
+                                        className="px-3 py-2 ring ring-gray-600 bg-gray-800/30 placeholder:text-gray-300/30 text-white rounded-lg"
+                                        placeholder="+372 XXXX XXXX"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-3">
+                                    <p className="text-white">Email:</p>
+                                    <input
+                                        type="email"
+                                        className="px-3 py-2 ring ring-gray-600 bg-gray-800/30 placeholder:text-gray-300/30 text-white rounded-lg"
+                                        placeholder="example@gmail.com"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-3">
-                                <p className="text-white">Email:</p>
-                                <input
-                                    type="email"
-                                    className="px-3 py-2 ring ring-gray-600 bg-gray-800/30 placeholder:text-gray-300/30 text-white rounded-lg"
-                                    placeholder="example@gmail.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                    </main>
-                    <footer className="flex flex-col gap-3 p-3">
-                        <button
-                            className={`w-full py-2 bg-blue-800/60 rounded-lg text-white ring ring-blue-600 cursor-pointer ${isPending && "opacity-60"}`}
-                            onClick={() => createBooking()}
-                            disabled={isPending}
-                        >
-                            Make reservation
-                        </button>
-                        <button
-                            className={`w-full py-2 rounded-lg text-white ring ring-gray-600 cursor-pointer ${isPending && "opacity-60"}`}
-                            onClick={() => setSelectedTable(null)}
-                            disabled={isPending}
-                        >
-                            Cancel
-                        </button>
-                    </footer>
+                        </main>
+                        <footer className="flex flex-col gap-3 p-3">
+                            <button
+                                className={`w-full py-2 bg-blue-800/60 rounded-lg text-white ring ring-blue-600 cursor-pointer ${isPending && "opacity-60"}`}
+                                onClick={() => createBooking()}
+                                disabled={isPending}
+                            >
+                                Make reservation
+                            </button>
+                            <button
+                                className={`w-full py-2 rounded-lg text-white ring ring-gray-600 cursor-pointer ${isPending && "opacity-60"}`}
+                                onClick={() => setSelectedTable(null)}
+                                disabled={isPending}
+                            >
+                                Cancel
+                            </button>
+                        </footer>
+                    </div>
                 </div>
             )}
             <div className="absolute right-0 bottom-0 overflow-hidden p-3">

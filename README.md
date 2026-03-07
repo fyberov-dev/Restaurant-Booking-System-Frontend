@@ -1,73 +1,85 @@
-# React + TypeScript + Vite
+# Restaurant Reservation System (backend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Reservation system for a restaurant with a filtering functionality and customizable floor planning.
 
-Currently, two official plugins are available:
+## 0. Content
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Backend: https://github.com/fyberov-dev/Restaurant-Booking-System-Backend
 
-## React Compiler
+## 1. Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Typescript
+- React.js
+- Vite.js
+- TailwindCSS
+- Docker
+- Nginx
 
-## Expanding the ESLint configuration
+## 2. Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+First of all, you need to clone a repository using:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. HTTPS,
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```shell
+https://github.com/fyberov-dev/Restaurant-Booking-System-Frontend.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. or SSH.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```shell
+git@github.com:fyberov-dev/Restaurant-Booking-System-Frontend.git
 ```
+
+### 2.1. Run locally
+
+Download dependencies:
+
+```shell
+npm install
+```
+
+Run in dev mode:
+
+```shell
+npm run dev
+```
+
+### 2.2. Run using docker
+
+Find `.env.example` file in a root, alter it and delete ".example" from name of the file, so new name will be `.env`
+
+`.env.example`
+
+```
+PROXY_TARGET=
+```
+
+For example, you can use next credentials (only in dev purposes):
+
+`.env`
+
+```
+PROXY_TARGET=http://restaurant-booking-system-backend:8080
+```
+
+\*`restaurant-booking-system-backend` is the name of the backend container that should be started as well to work together
+
+Create external network, if not created (but should be, if you ran backend that you should run first)
+
+```shell
+docker network create reservation_backend
+```
+
+Run docker
+
+```
+docker compose up --build -d
+```
+
+## 3. Usage
+
+You need to install and setup backend, so frontend will work (https://github.com/fyberov-dev/Restaurant-Booking-System-Backend)
+
+Access frontend using:
+http://localhost:3000/

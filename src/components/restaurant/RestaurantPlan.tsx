@@ -47,21 +47,29 @@ const RestaurantPlan = () => {
 
     return (
         <>
-            <div className="relative w-full h-full">
-                <div className="absolute right-6 top-6 z-100">
-                    <p className="text-xl text-white">x: {x}</p>
-                    <p className="text-xl text-white">y: {y}</p>
-                </div>
+            <div className="w-full h-full">
                 <TransformWrapper ref={transformWrapperRef} minScale={0.6} centerOnInit={true}>
                     {({ zoomIn, zoomOut, resetTransform }) => (
                         <>
-                            <TableTypeSelect />
-                            <TableStateTips show={Object.keys(bookedTables).length !== 0} />
-                            <RestaurantPlanControls zoomIn={zoomIn} zoomOut={zoomOut} resetTransform={resetTransform} />
-                            <PeopleCountSelector />
+                            <div className="relative w-full h-full">
+                                <div className="absolute right-3 top-3 z-100">
+                                    <p className="text-xl text-white">x: {x}</p>
+                                    <p className="text-xl text-white">y: {y}</p>
+                                </div>
+                                <TableTypeSelect />
+                                <TableStateTips show={Object.keys(bookedTables).length !== 0} />
+                                <RestaurantPlanControls
+                                    zoomIn={zoomIn}
+                                    zoomOut={zoomOut}
+                                    resetTransform={resetTransform}
+                                />
+                                <PeopleCountSelector />
+                            </div>
                             <TransformComponent
                                 wrapperStyle={{
-                                    position: "relative",
+                                    position: "absolute",
+                                    left: "0px",
+                                    top: "0px",
                                     width: "100%",
                                     height: "100%",
                                 }}

@@ -5,7 +5,7 @@ import { BookingContext } from "../../context/BookingContext";
 
 const Calendar = () => {
     console.log("[LOG] [Calendar] [Calendar] Rerendered");
-    const { bookedTables, clearBookedTables, startTime, endTime, setStartTime, setEndTime } =
+    const { bookedTables, clearBookedTables, startTime, endTime, setStartTime, setEndTime, setSelectedTable } =
         useContext(BookingContext);
 
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -21,6 +21,7 @@ const Calendar = () => {
     };
 
     const reset = () => {
+        setSelectedTable(null);
         setStartTime(null);
         setEndTime(null);
     };
