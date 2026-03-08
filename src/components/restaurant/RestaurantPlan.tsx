@@ -1,7 +1,7 @@
 import { TransformComponent, TransformWrapper, type ReactZoomPanPinchContentRef } from "react-zoom-pan-pinch";
 import MapImage from "../../assets/map.png";
 import TableObject from "../../components/objects/TableObject";
-import { useContext, useRef, useState, type MouseEvent } from "react";
+import { useContext, useEffect, useRef, useState, type MouseEvent } from "react";
 import useTables from "../../hooks/table/useTables";
 import { BookingContext } from "../../context/BookingContext";
 import TableStateTips from "./TableStateTips";
@@ -21,10 +21,27 @@ const RestaurantPlan = () => {
 
     const transformWrapperRef = useRef<ReactZoomPanPinchContentRef | null>(null);
 
+    const [debugMode, setDebugMode] = useState<boolean>(false);
     const [x, setX] = useState<number>(0);
     const [y, setY] = useState<number>(0);
 
+    useEffect(() => {
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "/") {
+                setDebugMode((prev) => !prev);
+            }
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", onKeyDown);
+        };
+    }, []);
+
     const handleOnMouseMove = (e: MouseEvent) => {
+        if (!debugMode && isPlanActive) return;
+
         const current = transformWrapperRef.current;
         const scale = current?.instance.transformState.scale ?? 1;
 
@@ -52,10 +69,12 @@ const RestaurantPlan = () => {
                     {({ zoomIn, zoomOut, resetTransform }) => (
                         <>
                             <div className="relative w-full h-full">
-                                <div className="absolute right-3 top-3 z-100">
-                                    <p className="text-xl text-white">x: {x}</p>
-                                    <p className="text-xl text-white">y: {y}</p>
-                                </div>
+                                {debugMode && isPlanActive && (
+                                    <div className="absolute right-3 top-3 z-100">
+                                        <p className="text-xl text-white">x: {x}</p>
+                                        <p className="text-xl text-white">y: {y}</p>
+                                    </div>
+                                )}
                                 <TableTypeSelect />
                                 <TableStateTips show={Object.keys(bookedTables).length !== 0} />
                                 <RestaurantPlanControls
