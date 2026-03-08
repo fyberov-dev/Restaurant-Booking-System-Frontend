@@ -4,9 +4,12 @@ import { getDuration, getTiming } from "../../util/timeUtil";
 import useCreateBooking from "../../hooks/booking/useCreateBooking";
 import type { AxiosError } from "axios";
 import type { ErrorResponse } from "../../types/api/ApiResponse";
+import useFetchBookings from "../../hooks/booking/useFetchBookings";
 
 const BookingTab = () => {
-    const { selectedTable, setSelectedTable, fetchBookings, startTime, endTime } = useContext(BookingContext);
+    const { selectedTable, setSelectedTable, startTime, endTime } = useContext(BookingContext);
+
+    const { fetch } = useFetchBookings();
 
     const [phone, setPhone] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -49,7 +52,7 @@ const BookingTab = () => {
                 {
                     onSuccess: () => {
                         setResponseMessage("Table reservation succeed");
-                        fetchBookings();
+                        fetch(startTime, endTime);
                     },
                     onError: (e: AxiosError<ErrorResponse>) => {
                         setResponseMessage(e.response?.data.detail ?? "");

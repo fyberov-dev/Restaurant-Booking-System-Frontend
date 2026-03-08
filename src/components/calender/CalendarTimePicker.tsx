@@ -4,25 +4,18 @@ import { BookingContext } from "../../context/BookingContext";
 import ResetIcon from "../../assets/icons/reset.svg";
 import useRestaurant from "../../hooks/restaurant/useRestaurant";
 import { getDuration, getTiming } from "../../util/timeUtil";
+import useFetchBookings from "../../hooks/booking/useFetchBookings";
 
 interface CalendarTimePickerProps {
-    startTime: Date | null;
-    endTime: Date | null;
     selectedDate: Date;
-    updateStartTime: (date: Date | null) => void;
-    updateEndTime: (date: Date | null) => void;
     reset: () => void;
 }
 
-const CalendarTimePicker = ({
-    startTime,
-    endTime,
-    selectedDate,
-    updateStartTime,
-    updateEndTime,
-    reset,
-}: CalendarTimePickerProps) => {
-    const { bookedTables, clearBookedTables } = useContext(BookingContext);
+const CalendarTimePicker = ({ selectedDate, reset }: CalendarTimePickerProps) => {
+    const { bookedTables, startTime, endTime, setStartTime, setEndTime, clearBookedTables } =
+        useContext(BookingContext);
+
+    const { fetch } = useFetchBookings();
 
     const { data: restaurant, isLoading } = useRestaurant();
 
@@ -31,6 +24,31 @@ const CalendarTimePicker = ({
     const [hoveredTime, setHoveredTime] = useState<Date | null>(null);
 
     const availableHours = useAvailableHours(selectedDate);
+
+    const updateStartTime = (date: Date | null) => {
+        setStartTime(date);
+
+        if (endTime && date) {
+            fetch(date, endTime);
+        }
+    };
+
+    const updateEndTime = (date: Date | null) => {
+        setEndTime(date);
+
+        if (startTime && date) {
+            fetch(startTime, date);
+        }
+    };
+
+    const updateStartAndEndTimes = (startTime: Date | null, endTime: Date | null) => {
+        setStartTime(startTime);
+        setEndTime(endTime);
+
+        if (startTime && endTime) {
+            fetch(startTime, endTime);
+        }
+    };
 
     const select = (d: Date) => {
         if (startTime?.getTime() === d.getTime() || endTime?.getTime() === d.getTime()) {
@@ -50,8 +68,7 @@ const CalendarTimePicker = ({
         }
 
         if (d < startTime || !isInsideMaxBookTime(startTime, d)) {
-            updateEndTime(null);
-            updateStartTime(d);
+            updateStartAndEndTimes(d, null);
             if (bookedTables) {
                 clearBookedTables();
             }

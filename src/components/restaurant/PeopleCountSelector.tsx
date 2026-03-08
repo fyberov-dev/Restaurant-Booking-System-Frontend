@@ -1,15 +1,24 @@
 import { useContext } from "react";
 import { BookingContext } from "../../context/BookingContext";
+import useFetchBookings from "../../hooks/booking/useFetchBookings";
 
 const PeopleCountSelector = () => {
-    const { selectedGuests, updateSelectedGuests } = useContext(BookingContext);
+    const { selectedGuests, updateSelectedGuests, startTime, endTime } = useContext(BookingContext);
+
+    const { fetch } = useFetchBookings();
 
     const increase = () => {
-        updateSelectedGuests(selectedGuests + 1);
+        const increasedValue = selectedGuests + 1;
+
+        updateSelectedGuests(increasedValue);
+        fetch(startTime, endTime, increasedValue);
     };
 
     const decrease = () => {
-        updateSelectedGuests(selectedGuests - 1);
+        const decreasedValue = selectedGuests - 1;
+
+        updateSelectedGuests(decreasedValue);
+        fetch(startTime, endTime, decreasedValue);
     };
 
     return (

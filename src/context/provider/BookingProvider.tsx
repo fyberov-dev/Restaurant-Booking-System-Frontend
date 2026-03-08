@@ -1,8 +1,7 @@
 import type React from "react";
 import { BookingContext, type BookingContextType } from "../BookingContext";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import type { FilteredTablesDto } from "../../types/table/FilteredTablesDto";
-import useBookings from "../../hooks/booking/useBookings";
 import type { Table } from "../../types/table/Table";
 
 interface BookingProviderType {
@@ -26,8 +25,6 @@ const BookingProvider = ({ children }: BookingProviderType) => {
         }
     };
 
-    const { mutate: getBookingsMutate } = useBookings();
-
     const clearBookedTables = () => {
         setBookedTables({});
     };
@@ -36,32 +33,6 @@ const BookingProvider = ({ children }: BookingProviderType) => {
         setBookedTables(tables);
         setIsPlanActive(true);
     };
-
-    const fetchBookings = useCallback(() => {
-        if (!startTime || !endTime) return;
-
-        const startTimeStr = startTime.toISOString();
-        const endTimeStr = endTime.toISOString();
-
-        getBookingsMutate(
-            {
-                startTime: startTimeStr,
-                endTime: endTimeStr,
-                guests: selectedGuests,
-                type: selectedType,
-            },
-            {
-                onSuccess: (b) => {
-                    setBookedTables(b);
-                    setIsPlanActive(true);
-                },
-            },
-        );
-    }, [startTime, endTime, selectedGuests, selectedType, getBookingsMutate]);
-
-    useEffect(() => {
-        fetchBookings();
-    }, [startTime, endTime, fetchBookings, selectedGuests, selectedType]);
 
     return (
         <BookingContext.Provider
@@ -80,7 +51,6 @@ const BookingProvider = ({ children }: BookingProviderType) => {
                     setSelectedType,
                     selectedTable,
                     setSelectedTable,
-                    fetchBookings,
                     updateSelectedGuests,
                     clearBookedTables,
                 } satisfies BookingContextType
