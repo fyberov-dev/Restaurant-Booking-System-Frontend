@@ -7,10 +7,10 @@ function App() {
     return (
         <div className="relative w-screen h-screen flex items-center justify-center bg-neutral-950 p-6 gap-3 overflow-hidden">
             <BookingProvider>
-                <div className="relative h-full border border-gray-600 rounded-lg">
+                <div className="relative h-full border border-neutral-800 rounded-xl">
                     <Calendar />
                 </div>
-                <div className="relative w-full h-full flex border border-gray-600 rounded-lg">
+                <div className="relative w-full h-full flex border border-neutral-800 rounded-xl overflow-hidden">
                     <RestaurantPlan />
                     <BookingTab />
                 </div>

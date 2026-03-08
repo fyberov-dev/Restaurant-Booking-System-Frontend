@@ -9,23 +9,23 @@ interface ChairObjectProps {
 const ChairObject = ({ isReverse, state, isSelected }: ChairObjectProps) => {
     const getStyle = () => {
         if (isSelected) {
-            return "bg-blue-600/30 border border-blue-600/30";
+            return "bg-blue-600/30 border border-blue-600/30 shadow-sm shadow-blue-600/30";
         }
 
         if (state === "PERFECT") {
-            return "bg-purple-600/30 border border-purple-600/30";
+            return "bg-purple-600/30 border border-purple-600/30 shadow-sm shadow-purple-600/30";
         }
 
         if (state === "AVAILABLE") {
-            return "bg-green-600/30 border border-green-600/30";
+            return "bg-green-600/30 border border-green-600/30 shadow-sm shadow-green-600/30";
         }
 
         if (state === "BAD") {
-            return "bg-yellow-600/30 border border-yellow-600/30";
+            return "bg-yellow-600/30 border border-yellow-600/30 shadow-sm shadow-yellow-600/30";
         }
 
         if (state === "UNAVAILABLE") {
-            return "bg-red-600/30 border border-red-600/30";
+            return "bg-red-600/30 border border-red-600/30 shadow-sm shadow-red-600/30";
         }
 
         return "bg-neutral-600";

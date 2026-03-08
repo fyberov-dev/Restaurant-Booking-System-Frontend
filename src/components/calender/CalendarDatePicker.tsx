@@ -14,18 +14,18 @@ const CalendarDatePicker = ({ selectedDate, updateSelectedDate }: CalendarDatePi
 
     const getStyle = (date: Date) => {
         if (selectedDate.toLocaleDateString() === date.toLocaleDateString()) {
-            return "bg-blue-600/40 text-white";
+            return "bg-blue-600/45 ring ring-blue-600 shadow-xl shadow-blue-600/30";
         }
 
         if (date.toLocaleDateString() === now.toLocaleDateString()) {
-            return "bg-blue-400/40 text-white";
+            return "bg-blue-400/45 ring ring-blue-400 shadow-lg shadow-blue-400/30";
         }
 
         if (date.getMonth() != selectedMonth.getMonth() || date < now) {
-            return "opacity-30 hover:bg-gray-600/50 active:bg-blue-600 text-white";
+            return "opacity-30 hover:bg-gray-600/50 active:bg-blue-600";
         }
 
-        return "hover:bg-gray-600/50 active:bg-blue-600 text-white";
+        return "hover:bg-gray-600/50 active:bg-blue-500 bg-neutral-800/10 backdrop-blur-xs";
     };
 
     const selectDate = (date: Date) => {
@@ -37,14 +37,14 @@ const CalendarDatePicker = ({ selectedDate, updateSelectedDate }: CalendarDatePi
     };
 
     return (
-        <div className="px-3 flex flex-col gap-3 border-b border-gray-600 py-3">
-            <div className="flex flex-col gap-3 p-3 bg-gray-600/10 border border-gray-300 rounded-xl">
+        <div className="p-1 flex flex-col gap-3 border-b border-neutral-800">
+            <div className="flex flex-col gap-3 p-3 bg-neutral-800/10 border border-neutral-800 rounded-xl">
                 <div className="flex justify-between items-center gap-3">
                     <div className="transition-all cursor-pointer hover:-translate-x-px" onClick={() => prevMonth()}>
                         <img src={ChevronLeft} alt="prev month" />
                     </div>
                     <p className="text-white">{activeDate}</p>
-                    <div className="transition-all cursor-pointer hover:-translate-x-px" onClick={() => nextMonth()}>
+                    <div className="transition-all cursor-pointer hover:translate-x-px" onClick={() => nextMonth()}>
                         <img src={ChevronRight} alt="next month" />
                     </div>
                 </div>
@@ -56,11 +56,11 @@ const CalendarDatePicker = ({ selectedDate, updateSelectedDate }: CalendarDatePi
                     ))}
                     {calendar.map((d, i) => (
                         <div
-                            className={`transition-all p-1 active:scale-90 border border-gray-300/10 flex items-center justify-center rounded-lg cursor-pointer ${getStyle(d)}`}
+                            className={`transition-all p-1 border border-gray-300/10 flex items-center justify-center rounded-lg cursor-pointer ${getStyle(d)} active:scale-95 hover:scale-105`}
                             key={i}
                             onClick={() => selectDate(d)}
                         >
-                            <p>{d.getDate()}</p>
+                            <p className="text-white">{d.getDate()}</p>
                         </div>
                     ))}
                 </div>

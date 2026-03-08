@@ -5,8 +5,16 @@ import { BookingContext } from "../../context/BookingContext";
 
 const Calendar = () => {
     console.log("[LOG] [Calendar] [Calendar] Rerendered");
-    const { bookedTables, clearBookedTables, startTime, endTime, setStartTime, setEndTime, setSelectedTable } =
-        useContext(BookingContext);
+    const {
+        bookedTables,
+        clearBookedTables,
+        startTime,
+        endTime,
+        setStartTime,
+        setEndTime,
+        setSelectedTable,
+        updateBookedTables,
+    } = useContext(BookingContext);
 
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
@@ -24,13 +32,14 @@ const Calendar = () => {
         setSelectedTable(null);
         setStartTime(null);
         setEndTime(null);
+        updateBookedTables({});
     };
 
     return (
         <div className="relative w-full h-full flex flex-col overflow-hidden">
-            <div className="w-full px-3 py-2 flex items-center justify-start border-b border-gray-600">
-                <p className="text-white text-xl">Book the table</p>
-            </div>
+            <header className="w-full px-3 py-4 flex items-center justify-start border-b border-neutral-800">
+                <h3 className="text-white text-xl">Book the table</h3>
+            </header>
             <CalendarDatePicker selectedDate={selectedDate} updateSelectedDate={updateSelectedDate} />
             <CalendarTimePicker
                 startTime={startTime}

@@ -65,16 +65,21 @@ const BookingTab = () => {
         setEmail("");
     };
 
+    const book = () => {
+        if (!phone.length || !email.length) return;
+        createBooking();
+    };
+
     return (
         <>
             {selectedTable && (
                 <div className="pr-3 py-3">
-                    <div className="relative h-full flex flex-col justify-between border border-gray-600 rounded-xl bg-neutral-950/80 backdrop-blur-xs z-300">
-                        <header className="p-3 border-b border-gray-600">
+                    <div className="relative h-full flex flex-col justify-between border border-neutral-800 rounded-xl bg-neutral-950/10 backdrop-blur-lg z-300 shadow-sm shadow-neutral-950">
+                        <header className="p-3 border-b border-neutral-900">
                             <h3 className="text-white">Selected table</h3>
                         </header>
                         <main className="h-full flex flex-col gap-3">
-                            <div className="flex flex-col gap-3 border-b border-gray-600 p-3">
+                            <div className="flex flex-col gap-3 border-b border-gray-900 p-3">
                                 <h4 className="text-white text-xl">Table data:</h4>
                                 <div className="flex flex-col gap-1">
                                     <p className="text-white">Guests number: {selectedTable?.guests}</p>
@@ -106,7 +111,7 @@ const BookingTab = () => {
                                     <input
                                         name="phone"
                                         type="text"
-                                        className="px-3 py-2 ring ring-gray-600 bg-gray-800/30 placeholder:text-gray-300/30 text-white rounded-lg"
+                                        className="px-3 py-2 ring ring-neutral-800 focus:ring-neutral-600 outline-none bg-neutral-950/10 shadow-sm shadow-neutral-950 placeholder:text-gray-300/60 text-white rounded-lg"
                                         placeholder="+372 XXXX XXXX"
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
@@ -116,7 +121,7 @@ const BookingTab = () => {
                                     <p className="text-white">Email:</p>
                                     <input
                                         type="email"
-                                        className="px-3 py-2 ring ring-gray-600 bg-gray-800/30 placeholder:text-gray-300/30 text-white rounded-lg"
+                                        className="px-3 py-2 ring ring-neutral-800 focus:ring-neutral-600 outline-none bg-neutral-950/10 shadow-sm shadow-neutral-950 placeholder:text-gray-300/60 text-white rounded-lg"
                                         placeholder="example@gmail.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
@@ -126,14 +131,14 @@ const BookingTab = () => {
                         </main>
                         <footer className="flex flex-col gap-3 p-3">
                             <button
-                                className={`w-full py-2 bg-blue-800/60 rounded-lg text-white ring ring-blue-600 cursor-pointer ${isPending && "opacity-60"}`}
-                                onClick={() => createBooking()}
+                                className={`transition-all w-full py-2 bg-blue-600/45 shadow-xl shadow-blue-600/30 rounded-lg text-white ring ring-blue-600 cursor-pointer hover:scale-101 active:scale-95  ${isPending && "opacity-60"}`}
+                                onClick={book}
                                 disabled={isPending}
                             >
                                 Make reservation
                             </button>
                             <button
-                                className={`w-full py-2 rounded-lg text-white ring ring-gray-600 cursor-pointer ${isPending && "opacity-60"}`}
+                                className={`w-full py-2 rounded-lg text-white ring ring-neutral-800 bg-neutral-950/10 shadow-sm shadow-neutral-950 cursor-pointer ${isPending && "opacity-60"}`}
                                 onClick={() => setSelectedTable(null)}
                                 disabled={isPending}
                             >

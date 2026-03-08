@@ -7,21 +7,25 @@ const tips = [
         title: "Perfect match",
         color: "bg-purple-800/30",
         ring: "ring-purple-600",
+        shadow: "shadow-purple-600/30",
     },
     {
         title: "Available",
         color: "bg-green-800/30",
         ring: "ring-green-600",
+        shadow: "shadow-green-600/30",
     },
     {
         title: "Available / Bad match",
         color: "bg-yellow-800/30",
         ring: "ring-yellow-600",
+        shadow: "shadow-yellow-600/30",
     },
     {
         title: "Unavailable",
         color: "bg-red-800/30",
         ring: "ring-red-600",
+        shadow: "shadow-red-600/30",
     },
 ] as const;
 
@@ -32,7 +36,7 @@ const TableStateTips = ({ show }: TableStateTipsProps) => {
         >
             {tips.map((t) => (
                 <div
-                    className={`${t.color} ring ${t.ring} px-2 py-1 rounded-xl backdrop-blur-xs whitespace-nowrap`}
+                    className={`${t.color} ring ${t.ring} px-2 py-1 rounded-xl backdrop-blur-xs whitespace-nowrap shadow-lg ${t.shadow}`}
                     key={t.color}
                 >
                     <p className="text-white text-sm">{t.title}</p>

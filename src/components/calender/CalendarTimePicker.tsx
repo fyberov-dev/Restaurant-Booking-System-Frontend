@@ -50,11 +50,8 @@ const CalendarTimePicker = ({
         }
 
         if (d < startTime || !isInsideMaxBookTime(startTime, d)) {
-            if (endTime && (!isInsideMaxBookTime(d, endTime) || d > endTime)) {
-                updateEndTime(null);
-            }
+            updateEndTime(null);
             updateStartTime(d);
-
             if (bookedTables) {
                 clearBookedTables();
             }
@@ -81,47 +78,80 @@ const CalendarTimePicker = ({
     };
 
     const getStyle = (date: Date) => {
-        if (date.getTime() === startTime?.getTime()) {
-            return "bg-blue-800/60";
-        }
-        if (
-            startTime &&
-            hoveredTime &&
-            date <= hoveredTime &&
-            date > startTime &&
-            isInsideMaxBookTime(startTime, date) &&
-            isInsideMaxBookTime(startTime, hoveredTime)
-        ) {
-            if (!endTime || (endTime && endTime.getTime() !== date.getTime())) {
-                return "bg-blue-800/30";
+        if (startTime && endTime && hoveredTime) {
+            if (date >= startTime && date <= hoveredTime && isStartTimingCloser(hoveredTime)) {
+                if (date.getTime() === hoveredTime.getTime()) {
+                    return getActiveStyle();
+                }
+
+                if (date.getTime() === startTime.getTime()) {
+                    return "ring ring-blue-600/30";
+                }
+
+                return "opacity-10";
+            }
+
+            if (isInsideMaxBookTime(startTime, date) && !isStartTimingCloser(hoveredTime) && date >= hoveredTime) {
+                if (date.getTime() === hoveredTime.getTime()) {
+                    return getActiveStyle();
+                }
+
+                if (date.getTime() === endTime.getTime()) {
+                    return "ring ring-blue-600/30";
+                }
+
+                return "opacity-100";
+            }
+
+            if (
+                hoveredTime > endTime &&
+                date >= endTime &&
+                isInsideMaxBookTime(startTime, date) &&
+                date <= hoveredTime
+            ) {
+                if (date.getTime() === hoveredTime.getTime()) {
+                    return getActiveStyle();
+                }
+
+                if (date.getTime() === endTime.getTime()) {
+                    return getActiveStyle();
+                }
+
+                return "bg-blue-600/10";
             }
         }
-        if (date.getTime() === endTime?.getTime()) {
-            return "bg-blue-700/60";
-        }
-        if (startTime && startTime < date && endTime && endTime > date) {
-            if (isStartTimingCloser(date)) {
-                return "bg-blue-600/20 hover:bg-blue-600/20 active:bg-blue-600/40";
-            } else {
-                return "bg-blue-600/15 hover:bg-blue-700/20 active:bg-blue-700/40";
+
+        if (startTime && endTime) {
+            if (date < startTime || !isInsideMaxBookTime(startTime, date)) {
+                return "opacity-10";
+            }
+
+            if (date > startTime && endTime > date) {
+                if (isStartTimingCloser(date)) {
+                    return "bg-blue-800/10";
+                } else {
+                    return "bg-blue-600/10";
+                }
             }
         }
-        if (startTime && date > startTime && isInsideMaxBookTime(startTime, date)) {
-            return "bg-gray-600/10 opacity-80 hover:bg-gray-600/60 active:bg-gray-600/100";
+
+        if (startTime && !endTime && (!isInsideMaxBookTime(startTime, date) || date < startTime)) {
+            return "opacity-10";
         }
-        if (
-            endTime &&
-            startTime &&
-            date < startTime &&
-            date.getTime() != startTime.getTime() &&
-            isInsideMaxBookTime(date, endTime)
-        ) {
-            return "bg-gray-600/10 opacity-80 hover:bg-gray-600/60 active:bg-gray-600/100";
+
+        if (startTime?.getTime() === date.getTime()) {
+            return getActiveStyle();
         }
-        if (startTime && (date < startTime || !isInsideMaxBookTime(startTime, date))) {
-            return "opacity-30 hover:opacity-60 active:opacity-100";
+
+        if (endTime?.getTime() === date.getTime()) {
+            return getActiveStyle();
         }
-        return "bg-gray-600/10 hover:bg-gray-600/50";
+
+        return "hover:bg-blue-600/30 hover:ring hover:ring-blue-600 hover:shadow-lg hover:shadow-blue-600/30";
+    };
+
+    const getActiveStyle = () => {
+        return "bg-blue-600/30 ring ring-blue-600 shadow-lg shadow-blue-600/30";
     };
 
     const isStartTimingCloser = (date: Date) => {
@@ -158,11 +188,11 @@ const CalendarTimePicker = ({
         <div className="relative w-full h-full flex flex-col overflow-hidden">
             {!isLoading && (
                 <>
-                    <div className="relative w-full h-full py-3 overflow-hidden">
-                        <div className="relative w-full h-full grid grid-cols-2 ps-3 pe-3 gap-1 overflow-auto custom-scrollbar select-none">
+                    <div className="relative w-full h-full py-1 overflow-hidden">
+                        <div className="relative w-full h-full grid grid-cols-2 px-1 gap-1 overflow-auto custom-scrollbar select-none">
                             {availableHours?.map((d) => (
                                 <button
-                                    className={`transition-all active:scale-95 text-white p-2 flex items-center justify-center border border-gray-300 rounded-xl cursor-pointer ${getStyle(d)}`}
+                                    className={`transition-all active:scale-95 text-white p-2 flex items-center justify-center border border-neutral-800 rounded-xl cursor-pointer ${getStyle(d)}`}
                                     key={d.getTime()}
                                     onClick={() => select(d)}
                                     onMouseEnter={() => updateHoveredTime(d)}
@@ -173,17 +203,17 @@ const CalendarTimePicker = ({
                             ))}
                         </div>
                         <button
-                            className={`absolute transition-all left-3 bottom-3 p-1 rounded-lg bg-white/50 ring ring-white cursor-pointer ${startTime || endTime ? "opacity-100 block" : "translate-y-6 opacity-0"}`}
+                            className={`absolute transition-all left-3 bottom-3 p-1 rounded-lg bg-neutral-950/10 ring ring-neutral-800 hover:ring-neutral-600 shadow-xs shadow-neutral-950 cursor-pointer ${startTime || endTime ? "opacity-100 block" : "translate-y-6 opacity-0"}`}
                             onClick={reset}
                         >
                             <img src={ResetIcon} alt="Reset choice" />
 
                             {clickCounter > 5 && clickCounter < 10 && (
-                                <div className="absolute animate-[ping_3s_cubic-bezier(0,0.1,0,1)_infinite] w-full h-full bg-white left-1/2 top-1/2 -translate-1/2 rounded-lg"></div>
+                                <div className="absolute animate-[ping_3s_cubic-bezier(0,0.1,0,1)_infinite] w-5/6 h-5/6 bg-white left-1/2 top-1/2 -translate-1/2 rounded-lg"></div>
                             )}
                         </button>
                     </div>
-                    <div className="border-t border-gray-600 flex items-center justify-between py-2 px-3">
+                    <div className="border-t border-neutral-800 flex items-center justify-between py-2 px-3">
                         <p className="text-white">{getTempDuration()}</p>
                         <p className="text-white">Max reservation: {restaurant?.maxBookHours} hours</p>
                     </div>
