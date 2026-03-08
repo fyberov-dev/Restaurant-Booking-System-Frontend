@@ -5,11 +5,14 @@ import useCreateBooking from "../../hooks/booking/useCreateBooking";
 import type { AxiosError } from "axios";
 import type { ErrorResponse } from "../../types/api/ApiResponse";
 import useFetchBookings from "../../hooks/booking/useFetchBookings";
+import useRestaurant from "../../hooks/restaurant/useRestaurant";
 
 const BookingTab = () => {
     const { selectedTable, setSelectedTable, startTime, endTime } = useContext(BookingContext);
 
     const { fetch } = useFetchBookings();
+
+    const { data: restaurant } = useRestaurant();
 
     const [phone, setPhone] = useState<string>("");
     const [email, setEmail] = useState<string>("");
@@ -75,7 +78,7 @@ const BookingTab = () => {
 
     return (
         <>
-            {selectedTable && (
+            {selectedTable && restaurant && (
                 <div className="pr-3 py-3">
                     <div className="relative h-full flex flex-col justify-between border border-neutral-800 rounded-xl bg-neutral-950/10 backdrop-blur-lg z-300 shadow-sm shadow-neutral-950">
                         <header className="p-3 border-b border-neutral-900">
@@ -102,8 +105,14 @@ const BookingTab = () => {
                                 )}
                                 {startTime && endTime && (
                                     <p className="text-white/80">
-                                        From <span className="text-white font-bold">{getTiming(startTime)}</span> to{" "}
-                                        <span className="text-white font-bold">{getTiming(endTime)}</span>
+                                        From{" "}
+                                        <span className="text-white font-bold">
+                                            {getTiming(startTime, restaurant.zoneId)}
+                                        </span>{" "}
+                                        to{" "}
+                                        <span className="text-white font-bold">
+                                            {getTiming(endTime, restaurant.zoneId)}
+                                        </span>
                                         <span className="text-white/40">({getDuration(startTime, endTime)})</span>
                                     </p>
                                 )}

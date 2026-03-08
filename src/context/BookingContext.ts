@@ -6,6 +6,9 @@ export interface BookingContextType {
     bookedTables: FilteredTablesDto;
     updateBookedTables: (bookedTables: FilteredTablesDto) => void;
 
+    selectedDate: Date;
+    setSelectedDate: (date: Date) => void;
+
     isPlanActive: boolean;
     setIsPlanActive: (isActive: boolean) => void;
 
@@ -30,6 +33,9 @@ export interface BookingContextType {
 export const BookingContext = createContext<BookingContextType>({
     bookedTables: [],
     updateBookedTables: () => undefined,
+
+    selectedDate: new Date(),
+    setSelectedDate: () => undefined,
 
     isPlanActive: false,
     setIsPlanActive: () => undefined,

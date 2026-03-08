@@ -18,6 +18,7 @@ const BookingProvider = ({ children }: BookingProviderType) => {
     const [selectedGuests, setSelectedGuests] = useState<number>(2);
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedTable, setSelectedTable] = useState<Table | null>(null);
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     const updateSelectedGuests = (guests: number) => {
         if (guests > 0) {
@@ -40,6 +41,8 @@ const BookingProvider = ({ children }: BookingProviderType) => {
                 {
                     bookedTables,
                     updateBookedTables,
+                    selectedDate,
+                    setSelectedDate,
                     isPlanActive,
                     setIsPlanActive,
                     startTime,

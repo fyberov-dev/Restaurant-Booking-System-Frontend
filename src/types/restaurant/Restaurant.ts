@@ -3,6 +3,8 @@ export interface RestaurantDto {
     closeTime: string;
     timingsStep: number;
     maxBookHours: number;
+    availableTimings: string[];
+    zoneId: string;
     createdAt: string;
     updatedAt: string;
 }

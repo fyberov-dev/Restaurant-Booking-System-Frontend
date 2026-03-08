@@ -11,7 +11,7 @@ interface CalendarTimePickerProps {
     reset: () => void;
 }
 
-const CalendarTimePicker = ({ selectedDate, reset }: CalendarTimePickerProps) => {
+const CalendarTimePicker = ({ reset }: CalendarTimePickerProps) => {
     const { bookedTables, startTime, endTime, setStartTime, setEndTime, clearBookedTables } =
         useContext(BookingContext);
 
@@ -23,7 +23,7 @@ const CalendarTimePicker = ({ selectedDate, reset }: CalendarTimePickerProps) =>
 
     const [hoveredTime, setHoveredTime] = useState<Date | null>(null);
 
-    const availableHours = useAvailableHours(selectedDate);
+    const availableHours = useAvailableHours();
 
     const updateStartTime = (date: Date | null) => {
         setStartTime(date);
@@ -203,21 +203,23 @@ const CalendarTimePicker = ({ selectedDate, reset }: CalendarTimePickerProps) =>
 
     return (
         <div className="relative w-full h-full flex flex-col overflow-hidden">
-            {!isLoading && (
+            {!isLoading && restaurant && (
                 <>
                     <div className="relative w-full h-full py-1 overflow-hidden">
                         <div className="relative w-full h-full grid grid-cols-2 px-1 gap-1 overflow-auto custom-scrollbar select-none">
-                            {availableHours?.map((d) => (
-                                <button
-                                    className={`transition-all active:scale-95 text-white p-2 flex items-center justify-center border border-neutral-800 rounded-xl cursor-pointer ${getStyle(d)}`}
-                                    key={d.getTime()}
-                                    onClick={() => select(d)}
-                                    onMouseEnter={() => updateHoveredTime(d)}
-                                    onMouseLeave={() => removeHoveredTime()}
-                                >
-                                    {getTiming(d)}
-                                </button>
-                            ))}
+                            {availableHours?.map((d, i) => {
+                                return (
+                                    <button
+                                        className={`transition-all active:scale-95 text-white p-2 flex items-center justify-center border border-neutral-800 rounded-xl cursor-pointer ${getStyle(d)}`}
+                                        key={i}
+                                        onClick={() => select(d)}
+                                        onMouseEnter={() => updateHoveredTime(d)}
+                                        onMouseLeave={() => removeHoveredTime()}
+                                    >
+                                        {getTiming(d, restaurant.zoneId)}
+                                    </button>
+                                );
+                            })}
                         </div>
                         <button
                             className={`absolute transition-all left-3 bottom-3 p-1 rounded-lg bg-neutral-950/10 ring ring-neutral-800 hover:ring-neutral-600 shadow-xs shadow-neutral-950 cursor-pointer ${startTime || endTime ? "opacity-100 block" : "translate-y-6 opacity-0"}`}

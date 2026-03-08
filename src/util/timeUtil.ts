@@ -1,5 +1,9 @@
-export const getTiming = (date: Date) => {
-    return `${formatTiming(date.getHours())}:${formatTiming(date.getMinutes())}`;
+export const getTiming = (date: Date, zoneId: string) => {
+    return new Intl.DateTimeFormat("en-GB", {
+        timeZone: zoneId,
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(date);
 };
 
 export const formatTiming = (num: number) => {
