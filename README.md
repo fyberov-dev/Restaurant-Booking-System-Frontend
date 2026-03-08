@@ -9,6 +9,7 @@ Reservation system for a restaurant with a filtering functionality and customiza
     - [2.1. Run locally](#21-run-locally)
     - [2.2. Run using docker](#22-run-using-docker)
 - [3. Usage](#3-usage)
+  [3.1. Debug Mode](#31-debug-mode)
 - [4. Features for implementation](#4-features-for-implementation)
     - [4.1. Form Validation](#41-form-validation)
         - [4.1.1. What should be done?](#411-what-should-be-done)
@@ -95,12 +96,16 @@ You need to install and setup backend, so frontend will work (https://github.com
 Access frontend using:
 http://localhost:3000/
 
+### 3.1. Debug Mode
+
+When a Restaurant Plan is active press `/` to turn on the debug mode (currently shows only X and Y of a mouse pointer)
+
 ## 4. Features for implementation
 
 ### 4.1. Form Validation
 
 Add form validation for reservation form
 
-#### 4.1.1 What should be done?
+#### 4.1.1. What should be done?
 
 Import [zod library](https://www.npmjs.com/package/zod) for easy validation and error messaging
